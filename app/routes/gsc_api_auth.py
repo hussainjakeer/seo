@@ -1,4 +1,3 @@
-import os
 import flask
 import pandas as pd
 from app import app
@@ -9,7 +8,7 @@ import googleapiclient.discovery
 from google_auth_oauthlib import flow as gao_flow
 
 
-CLIENT_SECRETS_FILE = os.getenv('web_creds')
+CLIENT_SECRETS_FILE = "web_creds.json"
 
 
 SCOPES = ['https://www.googleapis.com/auth/webmasters.readonly', 'https://www.googleapis.com/auth/webmasters',

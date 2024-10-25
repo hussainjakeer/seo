@@ -1,0 +1,8 @@
+{"web":{
+    "client_id":"980797405797-lutoit929tco4aie1iuatu0573gv5i8n.apps.googleusercontent.com",
+    "project_id":"seo-tools-432821","auth_uri":"https://accounts.google.com/o/oauth2/auth",
+    "token_uri":"https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret":"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",
+    "redirect_uris":["https://127.0.0.1:5000/gsc_oauth2callback"],
+    "javascript_origins":["https://127.0.0.1:5000"]}}
