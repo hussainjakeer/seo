@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+
+  <link href="{{ url_for('static', filename='CSS/output.css') }}" rel="stylesheet">
+
+  <!-- For dashboard content -->
+  <!-- Google Fonts, Icons, Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Istok+Web:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <!-- Font Awesome for icons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+</head>
+
+<body class="flex bg-gray-100 font-istok h-screen">
+
+  <div class="sidebar bg-gray-800 text-white h-screen transition-all duration-300 w-64" id="sidebar">
+    <div class="flex justify-between items-center p-4">
+      <div class="text-xl ml-1 cursor-pointer" id="menu-toggle">&#9776;</div>
+    </div>
+    <ul class="mt-4 ml-3">
+      <li >
+        <a href="#" class="flex items-center p-2 hover:bg-gray-700 cursor-pointer bg-gray-700">
+        <i class="ri-dashboard-line"></i>
+        <span class="ml-2 transition-opacity duration-300">Dashboard</span>
+      </a>
+      </li>
+      <li class="flex items-center mt-1 p-2 hover:bg-gray-700 cursor-pointer">
+        <i class="ri-keyboard-line"></i>
+        <span class="ml-2 transition-opacity duration-300">Keyword</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="flex-1 relative">
+
+    <form id="projectForm" class="max-w-xl ml-4 mt-8 mx-auto flex items-center space-x-4" action="/dashboard" method="POST">
+      <select id="projects-ids" name = "projects-ids"
+          class="bg-gray-50 border w-4/6 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
+          {% for each_site in site_list %}
+          {% if each_site == selected_property %}
+          <option value="{{ each_site }}" selected>{{ each_site }}</option>
+          {% else %}
+          <option value="{{ each_site }}">{{ each_site }}</option>
+          {% endif %}
+      {% endfor %}
+            
+      </select>
+      <!-- Add here date picker -->
+      <div class="w-2/6">
+        <input type="text" id="daterange" placeholder="Choose a date range"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+        <input type="hidden" name="startDate" id="startDate" value="{{ start_date }}">
+        <input type="hidden" name="endDate" id="endDate" value = "{{ end_date }}">
+    </div>
+    </form>
+
+
+    <img src="path/to/your/image.jpg" alt="Profile" class="right-0 absolute top-9 mr-6 w-8 h-8 rounded-full object-cover" />
+    
+    <div class="mt-12 ml-4">
+        <div class="flex ml-1 items-start space-x-4">
+          <!-- CTR Statistics Clicks -->
+          <div class="w-1/5">
+              <div class="border shadow-lg p-3 mb-5 bg-white rounded-xl" style="height: 170px;">
+                  <!-- Icon Container -->
+                  <div class="mt-4 pt-1 ml-3 flex justify-center items-center rounded-full" style="width: 46px; height: 46px;background-color: #69f1a0; border: 8px solid #2fe268;">
+                      <span class="material-icons text-white text-lg">touch_app</span>
+                  </div>
+                  <!-- Title and Value -->
+                  <p class="mt-1 ml-3 mb-0 pt-1 pb-0 font-jua text-base">
+                      Clicks
+                  </p>
+                  <p class="ml-3 mt-0 font-jua text-xl">{{click_sum}}</p>
+              </div>
+          </div>
+
+          <!-- CTR Statistics Card -->
+          <div class="w-1/5">
+              <div class="border shadow-lg p-3 mb-5 bg-white rounded-xl" style="height: 170px;">
+              <!-- Icon Container -->
+              <div class="mt-4 pt-1 ml-3 flex justify-center items-center rounded-full" style="
+                      width: 46px;
+                      height: 46px;
+                      background-color: #f3680f;
+                      border: 8px solid #f15508;
+                  ">
+                  <span class="material-symbols-outlined text-white text-lg">bolt</span>
+              </div>
+              <!-- Title and Value -->
+              <p class="mt-1 ml-3 pl-1 mb-0 pt-1 pb-0 font-jua text-base">
+                  CTR
+              </p>
+              <p class="ml-3 mt-0 font-jua text-xl">{{ctr_sum}}</p>
+              </div>
+          </div>
+
+          <!-- Impression Statistics Card -->
+          <div class="w-1/5">
+              <div class="border shadow-lg p-3 mb-5 bg-white rounded-xl" style="height: 170px;">
+              <!-- Icon Container -->
+              <div class="mt-4 pt-1 ml-3 flex justify-center items-center rounded-full" style="
+                      width: 46px;
+                      height: 46px;
+                      background-color: #7755ec;
+                      border: 8px solid #6649c0;
+                  ">
+                  <span class="material-symbols-outlined text-white text-lg">heart_check</span>
+              </div>
+              <!-- Title and Value -->
+              <p class="mt-1 ml-3 mb-0 pt-1 pb-0 font-jua text-base">
+                  Impression
+              </p>
+              <p class="ml-3 mt-0 font-jua text-xl">{{impression_sum}}</p>
+              </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.getElementById('menu-toggle');
+    
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('w-16');
+      sidebar.classList.toggle('w-64');
+      sidebar.querySelectorAll('span').forEach(span => {
+        span.classList.toggle('opacity-0');
+      });
+    });
+  </script>
+  <!-- Include jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Include Moment.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+  <!-- Include Daterangepicker CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <!-- Include Daterangepicker JS -->
+  <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  
+  <script>
+      $(document).ready(function() {
+          // Get the start and end dates from the hidden input fields
+          var startDateValue = $('#startDate').val();
+          var endDateValue = $('#endDate').val();
+  
+          // Set default dates using the values from the hidden inputs
+          var defaultStartDate = moment(startDateValue);
+          var defaultEndDate = moment(endDateValue);
+  
+          // Initialize daterangepicker
+          $('#daterange').daterangepicker({
+              startDate: defaultStartDate, // Default start date
+              endDate: defaultEndDate, // Default end date
+              minDate: moment().subtract(3, 'years').startOf('year'), // Minimum selectable date
+              maxDate: moment(), // Maximum selectable date
+              opens: 'right', // Position of the date picker
+              ranges: {
+                  'Last 7 Days': [moment().subtract(7, 'days'), moment()],
+                  'Last 15 Days': [moment().subtract(15, 'days'), moment()],
+                  'This Month': [moment().startOf('month'), moment().endOf('month')],
+                  'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                  'Last 3 Months': [moment().subtract(3, 'months').startOf('month'), moment()],
+                  'Last 6 Months': [moment().subtract(6, 'months').startOf('month'), moment()],
+                  'Last 12 Months': [moment().subtract(12, 'months').startOf('month'), moment()],
+                  'Last 16 Months': [moment().subtract(16, 'months').startOf('month'), moment()]
+              },
+              locale: {
+                  format: 'YYYY-MM-DD' // Date format
+              }
+          }, function(start, end) {
+              // Update hidden fields with the selected dates
+              $('#startDate').val(start.format('YYYY-MM-DD'));
+              $('#endDate').val(end.format('YYYY-MM-DD'));
+  
+              // Automatically submit the form
+              $('#projectForm').submit();
+          });
+  
+         // Set hidden fields with the initial default date range
+          $('#startDate').val(defaultStartDate.format('YYYY-MM-DD'));
+          $('#endDate').val(defaultEndDate.format('YYYY-MM-DD'));
+          
+  
+          
+  
+          // Automatically fetch data when a project is selected
+          $('#projects-ids').change(function() {
+              var selectedValue = $(this).val();
+              if (selectedValue) {
+                  // Set the date range to last 6 months
+                  var startDate = moment().subtract(6, 'months').format('YYYY-MM-DD');
+                  var endDate = moment().format('YYYY-MM-DD');
+  
+                  $('#startDate').val(startDate);
+                  $('#endDate').val(endDate);
+                  $('#daterange').data('daterangepicker').setStartDate(startDate);
+                  $('#daterange').data('daterangepicker').setEndDate(endDate);
+  
+                  // Automatically submit the form
+                  $('#projectForm').submit();
+              }
+          });
+      });
+  </script>
+ 
+
+
+</body>
+
+</html>
